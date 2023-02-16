@@ -9,8 +9,10 @@ Class Edit extends Controller
 
 			$User = $this->load_model('User');
 			$user_data = $User->check_login(true);
+
 			if(is_object($user_data)){
 				$user_role = $User->check_login(true, ['admin']);
+
 				if ($user_role || $user_data->id == $_GET['id']){
 					if($_SERVER['REQUEST_METHOD'] == "POST"){		
 						$user = $this->load_model("User");

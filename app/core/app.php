@@ -7,9 +7,9 @@ Class App
 	protected $method = "index";
 	protected $params;
 
+	//preprocessing the url then call the controller with same name or call the home controller if url dont exist
 	public function __construct()
 	{
-
 		$url = $this->parseURL();
 		$url[0] = str_replace("-", "_", $url[0]);
 		

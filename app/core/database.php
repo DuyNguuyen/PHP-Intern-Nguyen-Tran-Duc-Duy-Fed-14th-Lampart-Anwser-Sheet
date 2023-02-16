@@ -1,8 +1,4 @@
 <?php 
-/*
-	*
-	* This is the database class
-	*/
 Class Database
 {	
 	public static $con;
@@ -10,9 +6,8 @@ Class Database
 	public function __construct()
 	{
 		try{
- 
 			$string = DB_TYPE . ":host=". DB_HOST .";dbname=". DB_NAME;
-			self::$con = new PDO($string,DB_USER,DB_PASS);
+			self::$con = new PDO($string, DB_USER, DB_PASS);
 
 		}catch (PDOException $e){
 
@@ -35,9 +30,7 @@ Class Database
  	}
 
 
-	/*
-	* read from database
-	*/
+	//read from database
 	public function read($query,$data = array())
 	{
 
@@ -55,9 +48,8 @@ Class Database
 		return false;
 	}
 
-	/*
-	* write to database
-	*/
+	
+	//write to database
 	public function write($query,$data = array())
 	{
 		$stm = self::$con->prepare($query);

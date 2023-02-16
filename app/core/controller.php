@@ -2,7 +2,7 @@
 
 Class Controller
 {
-
+	//load view with given data
 	public function view($path, $data = [])
 	{
 

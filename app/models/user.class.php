@@ -18,7 +18,7 @@ Class User
 			$this->error .= "Please enter a valid email <br>";
 		}
 
-		if(empty($data['name']) || !preg_match("/^[a-zA-Z]+$/", $data['name'])){
+		if(empty($data['name']) || !preg_match("/^[a-z ,.'-]+$/i", $data['name'])){
 			$this->error .= "Please enter a valid name <br>";
 		}
 
@@ -30,7 +30,6 @@ Class User
 			$this->error .= "Password must be atleast 4 characters long <br>";
 		}
 
-		//check if email already exists
 		$sql = "select * from users where email = :email limit 1";
 		$arr['email'] = $data['email'];
 		$check = $db->read($sql,$arr);
@@ -38,6 +37,7 @@ Class User
 			$this->error .= "That email is already in use <br>";
 		}
 
+		//created random unipe token for user
 		$data['token'] = $this->get_random_string_max(80);
 
 		if($this->error == ""){
@@ -83,6 +83,7 @@ Class User
 			if(is_array($result)){
 				$_SESSION['token'] = $result[0]->token;
 
+				//Set cookies to remember login for 6 hours or unset cookies when don't remember login
 				if (isset($POST["remember_me"])) {
 					setcookie("email", trim($POST['email']), time()+6*3600);
 					setcookie("password", trim($POST['password']), time()+6*3600);
@@ -101,6 +102,7 @@ Class User
 		$_SESSION['error'] = $this->error;
 	}
 
+	//get user by id
 	public function get_user($id)
 	{
 		$db = Database::newInstance();
@@ -118,6 +120,7 @@ Class User
 		return false;
 	}
 
+	//get all users
 	public function get_users()
 	{
 		$db = Database::newInstance();
@@ -133,18 +136,20 @@ Class User
 		return false;
 	}
 
-	public function check_login($redirect = false, $allowed = array())
+	//Check if already login. When redirect equal to true and user are not login then set header to login page
+	public function check_login($redirect = false, $role = array())
 	{	
 		$db = Database::newInstance();
 
-		if(count($allowed) > 0){	
+		//check user role
+		if(count($role) > 0){	
 			$arr['token'] = addslashes($_SESSION['token']);
 			$query = "select * from users where token = :token limit 1";
 			$result = $db->read($query,$arr);
 
 			if(is_array($result)){
 				$result = $result[0];
-				if(in_array($result->role, $allowed)){
+				if(in_array($result->role, $role)){
 					return $result;
 				}
 			}
@@ -169,6 +174,7 @@ Class User
 		return false;
 	}
 
+	//edit user profile
 	public function edit($POST)
 	{
 		$data = array();
@@ -182,7 +188,7 @@ Class User
 			$this->error .= "Please enter a valid email <br>";
 		}
 
-		if(empty($data['name']) || !preg_match("/^[a-zA-Z]+$/", $data['name'])){
+		if(empty($data['name']) || !preg_match("/^[a-z ,.'-]+$/i", $data['name'])){
 			$this->error .= "Please enter a valid name <br>";
 		}
 
@@ -227,6 +233,7 @@ Class User
 		header("Location: " . ROOT . "home");
 	}
 
+	//create a random string with random length
 	private function get_random_string_max($length) {
 		$array = array(0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 		$text = "";

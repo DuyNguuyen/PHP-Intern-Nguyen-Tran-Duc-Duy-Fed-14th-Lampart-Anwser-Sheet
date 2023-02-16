@@ -2,7 +2,6 @@
 
 Class Delete extends Controller
 {
-
 	public function index()
 	{	
         if(isset($_GET['id'])){
