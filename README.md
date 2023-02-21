@@ -6,7 +6,7 @@ Login-System
     ```console
     gh repo clone DuyNguuyen/PHP-Intern-Nguyen-Tran-Duc-Duy-Fed-14th-Lampart-Anwser-Sheet
     ```
-  - Create database name **users_db** in MySQL, import **users_db.sql** it
+  - Create database name **users_db** in MySQL, import **users_db.sql** to your database
   - Change defined values in *app/core/config* to match your database properties
   - Host to your localhost
   
